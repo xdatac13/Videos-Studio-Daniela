@@ -1,0 +1,19 @@
+# docker compose up -d   → the studio on http://localhost:3000
+# Put your keys in a .env file next to this one (see .env.example).
+services:
+  estudio:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PORT: 3000
+      DATA_DIR: /data
+    volumes:
+      - estudio-data:/data
+
+volumes:
+  estudio-data:

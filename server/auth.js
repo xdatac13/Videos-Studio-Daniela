@@ -1,7 +1,6 @@
 // Accounts and sessions: scrypt password hashes, random session tokens stored hashed, HttpOnly cookie.
 import crypto from 'node:crypto';
 import { db, now } from './db.js';
-import { cfg } from './config.js';
 
 const DIAS = 30, COOKIE = 'sid';
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
@@ -17,16 +16,17 @@ export function checkPass(pass, stored) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
-const atributos = () => `Path=/; HttpOnly; SameSite=Lax${cfg.production ? '; Secure' : ''}`;
+// Secure whenever the request really came over HTTPS (directly or through the host's proxy).
+const atributos = res => `Path=/; HttpOnly; SameSite=Lax${res.req.secure ? '; Secure' : ''}`;
 export function abrirSesion(res, userId) {
   const token = crypto.randomBytes(32).toString('base64url');
   db.prepare('INSERT INTO sessions (token, user_id, expira) VALUES (?,?,?)').run(sha(token), userId, now() + DIAS * 864e5);
-  res.append('Set-Cookie', `${COOKIE}=${token}; ${atributos()}; Max-Age=${DIAS * 86400}`);
+  res.append('Set-Cookie', `${COOKIE}=${token}; ${atributos(res)}; Max-Age=${DIAS * 86400}`);
 }
 export function cerrarSesion(req, res) {
   const t = leerCookie(req);
   if (t) db.prepare('DELETE FROM sessions WHERE token = ?').run(sha(t));
-  res.append('Set-Cookie', `${COOKIE}=; ${atributos()}; Max-Age=0`);
+  res.append('Set-Cookie', `${COOKIE}=; ${atributos(res)}; Max-Age=0`);
 }
 function leerCookie(req) {
   const m = /(?:^|;\s*)sid=([A-Za-z0-9_-]+)/.exec(req.headers.cookie || '');

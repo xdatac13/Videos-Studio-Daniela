@@ -1,0 +1,20 @@
+# Render blueprint: New → Blueprint → pick this repository. Render asks for the values marked "sync: false".
+services:
+  - type: web
+    name: estudio-daniela
+    runtime: docker
+    plan: starter            # a persistent disk needs a paid instance
+    healthCheckPath: /healthz
+    disk:
+      name: estudio-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ADMIN_EMAIL        # the account created with this email administers the studio
+        sync: false
+      - key: INVITE_CODE        # people need this code to create an account
+        generateValue: true
+      - key: ELEVENLABS_API_KEY # optional: transcription for subtitles and word-accurate cuts
+        sync: false

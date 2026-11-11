@@ -8,7 +8,6 @@ export const cfg = {
   port: num(env.PORT, 3000),
   dataDir: path.resolve(env.DATA_DIR || './data'),
   appUrl: (env.APP_URL || '').replace(/\/$/, ''),
-  production: env.NODE_ENV === 'production',
 
   // Claude
   model: env.CLAUDE_MODEL || 'claude-opus-5-5',

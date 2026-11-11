@@ -26,7 +26,7 @@ app.use((req, res, next) => {
     'Referrer-Policy': 'same-origin',
     'Permissions-Policy': 'microphone=(self), camera=(), geolocation=()',
   });
-  if (cfg.production) res.set('Strict-Transport-Security', 'max-age=31536000');
+  if (req.secure) res.set('Strict-Transport-Security', 'max-age=31536000');
   next();
 });
 
@@ -94,12 +94,6 @@ app.put('/api/me/password', conSesion, limitar(8, 15 * 60e3), (req, res) => {
   db.prepare('UPDATE users SET pass = ? WHERE id = ?').run(hashPass(nueva), req.user.id);
   db.prepare('DELETE FROM sessions WHERE user_id = ?').run(req.user.id);
   abrirSesion(res, req.user.id);
-  res.json({ ok: true });
-});
-app.delete('/api/me', conSesion, (req, res) => {
-  if (!checkPass(String(req.body?.pass ?? ''), req.user.pass)) return fallo(res, 401, 'bad_login', 'La contraseña no es correcta.');
-  db.prepare('DELETE FROM users WHERE id = ?').run(req.user.id);
-  cerrarSesion(req, res);
   res.json({ ok: true });
 });
 

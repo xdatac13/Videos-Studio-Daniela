@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Estudio Daniela</title>
+<meta name="description" content="Tu editor de video con Claude: del guion al video listo para publicar, y los mejores momentos de tus videos largos.">
+<meta name="theme-color" content="#fbf6f4">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/cormorant-garamond-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#/">Estudio Daniela<small>Tu editor de video</small></a>
+  <nav class="steps" id="pasos" aria-label="Pasos"></nav>
+  <div class="cuenta-nav" id="cuentaNav"></div>
+</div></header>
+<main><div class="wrap" id="vista"><div class="note" role="status"><span class="spin"></span>Abriendo el estudio…</div></div></main>
+<footer class="nav" id="pie"><div class="wrap">
+  <button class="btn" id="atras" type="button">← Atrás</button>
+  <span class="hint" id="pista"></span>
+  <button class="btn pri" id="sig" type="button">Siguiente →</button>
+</div></footer>
+<button type="button" class="fab" id="chatFab" aria-label="Edita con Claude" hidden>✦ <span>Edita con </span>Claude</button>
+<aside class="chat" id="chat" aria-label="Edita con Claude" hidden></aside>
+<input type="file" id="fVoz" accept="audio/*,video/mp4,.m4a,.mp3,.wav,.aac,.ogg,.webm" hidden>
+<input type="file" id="fMedia" accept="video/*,image/*" multiple hidden>
+<input type="file" id="fMus" accept="audio/*,.m4a,.mp3,.wav,.aac" hidden>
+<input type="file" id="fLargo" accept="video/*" hidden>
+<noscript><p style="padding:24px">El estudio necesita JavaScript para funcionar.</p></noscript>
+<script type="module" src="/js/main.js"></script>
+</body>
+</html>

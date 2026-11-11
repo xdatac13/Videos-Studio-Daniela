@@ -8,12 +8,13 @@
     "node": ">=22.13"
   },
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "node --watch server/index.js",
-    "demo": "AI_MOCK=1 node server/index.js",
-    "test": "node --test",
-    "reset-password": "node server/cli.js reset-password",
-    "set-plan": "node server/cli.js set-plan"
+    "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning --watch server/index.js",
+    "demo": "AI_MOCK=1 node --disable-warning=ExperimentalWarning server/index.js",
+    "test": "node --disable-warning=ExperimentalWarning --test",
+    "reset-password": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/cli.js reset-password",
+    "set-plan": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/cli.js set-plan",
+    "make-admin": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/cli.js make-admin"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.7.0",
