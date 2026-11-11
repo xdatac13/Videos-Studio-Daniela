@@ -1,0 +1,22 @@
+{
+  "name": "estudio-daniela",
+  "version": "1.0.0",
+  "description": "Estudio Daniela — editor de video con Claude para creadoras de contenido",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "demo": "AI_MOCK=1 node server/index.js",
+    "test": "node --test",
+    "reset-password": "node server/cli.js reset-password",
+    "set-plan": "node server/cli.js set-plan"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.7.0",
+    "express": "^5.3.0"
+  }
+}
