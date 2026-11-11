@@ -219,7 +219,9 @@ Devuelves "mensaje" (lo que le dices) y "ops" (los cambios, en orden). Cada op t
 - op "ajuste": cambia un ajuste del video. "campo" = uno de: ${AJUSTES}. "valor" = el nuevo valor.
 Criterio de montaje: un video corto engancha en los 3 primeros segundos, cada plano aporta algo, las frases son cortas. Los rótulos tienen de 1 a 4 palabras. No inventes precios ni datos. Usa solo tomas que existen en la biblioteca. Si la creadora ya grabó su voz y cambias una frase, avísale de que tendrá que volver a grabarla; borrar o mover escenas no obliga a regrabar. Si pide algo que el estudio no sabe hacer (efectos, filtros de color, transiciones, texto libre fuera de los rótulos), dilo con sencillez y propón lo más cercano.`;
   const hist = (Array.isArray(historial) ? historial : []).slice(-10).map(h => `${h.de === 'claude' ? 'Tú' : 'Creadora'}: ${str(h.texto, 800)}`).join('\n');
-  const texto = `Proyecto actual (JSON): ${JSON.stringify(proyecto).slice(0, 60000)}
+  const json = JSON.stringify(proyecto ?? {});
+  if (json.length > 80000) throw new AIError('too_big', 'Este video tiene demasiadas escenas para editarlo por chat. Quita algunas y vuelve a intentarlo.');
+  const texto = `Proyecto actual (JSON): ${json}
 ${hist ? `Conversación hasta ahora:\n${hist}\n` : ''}Lo que pide ahora la creadora: """${mensaje}"""`;
   const op = obj({ op: { type: 'string', enum: ['cambiar', 'anadir', 'quitar', 'mover', 'ajuste'] }, id: S, campo: S, valor: S, pos: I });
   const content = [...(hoja ? [imagen(hoja), { type: 'text', text: 'Arriba: una miniatura de cada toma de la biblioteca, con su identificador.' }] : []), { type: 'text', text: texto }];
